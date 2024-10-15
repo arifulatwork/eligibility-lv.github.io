@@ -183,19 +183,23 @@
             (sscGrade === 'A-' && hscGrade === 'A+') ||
             (sscGrade === 'A+' && hscGrade === 'A-') ||
             (sscGrade === 'A' && hscGrade === 'A-') ||
-            (sscGrade === 'A-' && hscGrade === 'A')
+            (sscGrade === 'A-' && hscGrade === 'A') ||
+            (sscGrade === 'B' && hscGrade === 'A+')
         ) {
             resultText = 'You can apply.';
             resultClass = 'success';
         } else if (
             (sscGrade === 'B' && hscGrade === 'A') ||
-            (sscGrade === 'A' && hscGrade === 'B')
+            (sscGrade === 'B' && hscGrade === 'A-')
+
         ) {
             resultText = 'Maybe you can apply.';
             resultClass = 'warning';
         } else if (
             (sscGrade === 'A-' && hscGrade === 'B') ||
-            (sscGrade === 'B' && hscGrade === 'A-')
+            (sscGrade === 'A+' && hscGrade === 'B') ||
+            (sscGrade === 'A' && hscGrade === 'B')
+            
         ) {
             resultText = 'Don\'t apply.';
             resultClass = 'error';
