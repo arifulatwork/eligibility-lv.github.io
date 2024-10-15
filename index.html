@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Admission</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            /* background: linear-gradient(to right, #6dd5ed, #2193b0); */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h2, h3 {
+            color: #333;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 20px;
+            margin: 10px 5px;
+            background-color: #ff6b6b; /* Button color */
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .btn:hover {
+            background-color: #ff4d4d; /* Darker button color on hover */
+            transform: scale(1.05); /* Slightly enlarge button on hover */
+        }
+
+        select {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            font-size: 18px;
+            border-radius: 8px;
+            background-color: #f1f1f1;
+            color: #333;
+        }
+
+        .result.success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .result.warning {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .result.error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Check Admission Eligibility</h2>
+    <button class="btn" onclick="showUndergraduate()">Undergraduate</button>
+    <button class="btn" onclick="showPostgraduate()">Postgraduate</button>
+
+    <div id="undergraduateSection" style="display:none; margin-top:20px;">
+        <h3>Enter Your SSC Grade</h3>
+        <select id="sscGrade">
+            <option value="A+">A+</option>
+            <option value="A">A</option>
+            <option value="A-">A-</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+            <option value="D">D</option>
+            <option value="F">F</option>
+        </select>
+
+        <h3>Do you have HSC or Diploma?</h3>
+        <button class="btn" onclick="showHsc()">HSC</button>
+        <button class="btn" onclick="showDiploma()">Diploma</button>
+
+        <div id="hscSection" style="display:none;">
+            <h3>Enter Your HSC Grade</h3>
+            <select id="hscGrade">
+                <option value="A+">A+</option>
+                <option value="A">A</option>
+                <option value="A-">A-</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+                <option value="F">F</option>
+            </select>
+            <button class="btn" onclick="checkHscEligibility()">Check Eligibility</button>
+        </div>
+
+        <div id="diplomaSection" style="display:none;">
+            <h3>Enter Your Diploma Grade</h3>
+            <select id="diplomaGrade">
+                <option value="A+">A+</option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+                <option value="F">F</option>
+            </select>
+            <button class="btn" onclick="checkDiplomaEligibility()">Check Eligibility</button>
+        </div>
+
+        <div id="result" class="result"></div>
+    </div>
+</div>
+
+<script>
+    function showUndergraduate() {
+        document.getElementById('undergraduateSection').style.display = 'block';
+    }
+
+    function showHsc() {
+        document.getElementById('hscSection').style.display = 'block';
+        document.getElementById('diplomaSection').style.display = 'none'; // Hide Diploma section
+    }
+
+    function showDiploma() {
+        document.getElementById('diplomaSection').style.display = 'block';
+        document.getElementById('hscSection').style.display = 'none'; // Hide HSC section
+    }
+
+    function checkHscEligibility() {
+        const sscGrade = document.getElementById('sscGrade').value;
+        const hscGrade = document.getElementById('hscGrade').value;
+        let resultText = '';
+        let resultClass = '';
+
+        // HSC eligibility logic
+        if (sscGrade === 'F' || hscGrade === 'F') {
+            resultText = 'Bro, get a life!';
+            resultClass = 'error';
+        } else if (sscGrade === 'C' || hscGrade === 'C' || sscGrade === 'D' || hscGrade === 'D') {
+            resultText = 'Don\'t apply.';
+            resultClass = 'error';
+        } else if (sscGrade === 'B' && hscGrade === 'B') {
+            resultText = 'Don\'t apply.';
+            resultClass = 'error';
+        } else if (sscGrade === 'A-' && hscGrade === 'A-') {
+            resultText = 'You can apply.';
+            resultClass = 'success';
+        } else if (sscGrade === 'A+' && hscGrade === 'A+') {
+            resultText = 'You are brilliant! Go and apply!';
+            resultClass = 'success';
+        } else if (
+            (sscGrade === 'A+' && hscGrade === 'A') ||
+            (sscGrade === 'A' && hscGrade === 'A+') ||
+            (sscGrade === 'A-' && hscGrade === 'A+') ||
+            (sscGrade === 'A+' && hscGrade === 'A-') ||
+            (sscGrade === 'A' && hscGrade === 'A-') ||
+            (sscGrade === 'A-' && hscGrade === 'A')
+        ) {
+            resultText = 'You can apply.';
+            resultClass = 'success';
+        } else if (
+            (sscGrade === 'B' && hscGrade === 'A') ||
+            (sscGrade === 'A' && hscGrade === 'B')
+        ) {
+            resultText = 'Maybe you can apply.';
+            resultClass = 'warning';
+        } else if (
+            (sscGrade === 'A-' && hscGrade === 'B') ||
+            (sscGrade === 'B' && hscGrade === 'A-')
+        ) {
+            resultText = 'Don\'t apply.';
+            resultClass = 'error';
+        }
+
+        const resultDiv = document.getElementById('result');
+        resultDiv.className = `result ${resultClass}`;
+        resultDiv.innerHTML = resultText;
+    }
+
+    function checkDiplomaEligibility() {
+        const sscGrade = document.getElementById('sscGrade').value;
+        const diplomaGrade = document.getElementById('diplomaGrade').value;
+        let resultText = '';
+        let resultClass = '';
+
+        // Diploma eligibility logic
+        if (sscGrade === 'F' || diplomaGrade === 'F') {
+            resultText = 'Bro, get a life!';
+            resultClass = 'error';
+        } else if (sscGrade === 'C' || diplomaGrade === 'C' || sscGrade === 'D' || diplomaGrade === 'D') {
+            resultText = 'Don\'t apply.';
+            resultClass = 'error';
+        } else if (sscGrade === 'B' && diplomaGrade === 'B') {
+            resultText = 'Maybe you can apply.';
+            resultClass = 'warning';
+        } else if (
+            (sscGrade === 'A+' && diplomaGrade === 'A+') ||
+            (sscGrade === 'A' && diplomaGrade === 'A') ||
+            (sscGrade === 'A' && diplomaGrade === 'A+') ||
+            (sscGrade === 'A+' && diplomaGrade === 'A') ||
+            (sscGrade === 'A-' && diplomaGrade === 'A+') ||
+            (sscGrade === 'A-' && diplomaGrade === 'A') ||
+            (sscGrade === 'A-' && diplomaGrade === 'B') ||
+            (sscGrade === 'B' && diplomaGrade === 'A+') ||
+            (sscGrade === 'B' && diplomaGrade === 'A')
+        ) {
+            resultText = 'You can apply.';
+            resultClass = 'success';
+        } else if (
+            (sscGrade === 'B' && diplomaGrade === 'B')
+        ) {
+            resultText = 'Maybe you can apply.';
+            resultClass = 'warning';
+        }
+
+        const resultDiv = document.getElementById('result');
+        resultDiv.className = `result ${resultClass}`;
+        resultDiv.innerHTML = resultText;
+    }
+</script>
+
+</body>
+</html>
